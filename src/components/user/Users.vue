@@ -8,7 +8,7 @@
         </el-breadcrumb>
 
         <!-- 卡片 -->
-        <el-card class="box-card">
+        <el-card>
             <!-- 搜索与添加 -->
             <el-row :gutter="20">
                 <el-col :span="8">
@@ -38,7 +38,7 @@
                         <el-button type="primary" icon="el-icon-edit" size="mini" @click="showEditDialog(scope.row.id)"></el-button>
                         <el-button type="danger" icon="el-icon-delete" size="mini" @click="removeUserById(scope.row.id)"></el-button>
                         <el-tooltip class="item" effect="dark" content="分配角色" placement="top" :enterable="false">
-                            <el-button type="warning" icon="el-icon-setting" size="mini"></el-button>
+                            <el-button type="warning" icon="el-icon-setting" size="mini" @click="setRole(scope.row)"></el-button>
                         </el-tooltip>
                     </template>
                 </el-table-column>
@@ -79,8 +79,8 @@
         </el-dialog>
 
         <!-- 编辑用户对话框 -->
-        <el-dialog title="修改用户" :visible.sync="editDialogVisible" width="50%">
-            <el-form :model="editForm" :rules="editFormRules" ref="editFormRef" label-width="70px" @close="editDialogClosed">
+        <el-dialog title="修改用户" :visible.sync="editDialogVisible" width="50%" @close="editDialogClosed">
+            <el-form :model="editForm" :rules="editFormRules" ref="editFormRef" label-width="70px">
                 <el-form-item label="用户名" prop="username">
                     <el-input v-model="editForm.username" disabled></el-input>
                 </el-form-item>
@@ -94,6 +94,26 @@
             <span slot="footer" class="dialog-footer">
                 <el-button @click="editDialogVisible = false">取 消</el-button>
                 <el-button type="primary" @click="editUser">确 定</el-button>
+            </span>
+        </el-dialog>
+
+        <!-- 分配角色对话框 -->
+        <el-dialog title="分配角色" :visible.sync="setRoleDialogVisible" width="50%">
+            <p>当前用户：{{userInfo.username}}</p>
+            <p>当前角色：{{userInfo.role_name}}</p>
+            <p>分配新角色：
+                <el-select v-model="selectedRoleId" placeholder="请选择">
+                    <el-option
+                    v-for="item in rolesList"
+                    :key="item.id"
+                    :label="item.roleName"
+                    :value="item.id">
+                    </el-option>
+                </el-select>
+            </p>
+            <span slot="footer" class="dialog-footer">
+                <el-button @click="setRoleDialogVisible = false">取 消</el-button>
+                <el-button type="primary" @click="saveRoleInfo">确 定</el-button>
             </span>
         </el-dialog>
     </div>
@@ -173,7 +193,15 @@ export default {
                     { required: true, message: '请输入手机号', trigger: 'blur' },
                     { validator: checkMobile, trigger: 'blur' }
                 ]
-            }
+            },
+            // 是否显示分配角色对话框
+            setRoleDialogVisible: false,
+            // 分配角色的用户
+            userInfo: {},
+            // 角色列表
+            rolesList: [],
+            // 选中的角色
+            selectedRoleId: ''
         }
     },
     created() {
@@ -183,7 +211,7 @@ export default {
         // 获取用户列表
         async getUserList() {
             const { data: res } = await this.$http.get('users', { params: this.queryInfo })
-            if (res.meta.status !== 200) return this.$http.error(res.meta.msg)
+            if (res.meta.status !== 200) return this.$msg.error(res.meta.msg)
             this.userlist = res.data.users
             this.total = res.data.total
         },
@@ -197,6 +225,8 @@ export default {
         handleSizeChange(size) {
             console.log('size: ', size);
             this.queryInfo.pagesize = size
+            const maxN = parseInt(this.total / this.queryInfo.pagesize + '') + (this.total % this.queryInfo.pagesize > 0 ? 1 : 0)
+            this.queryInfo.pagenum = this.queryInfo.pagenum > maxN ? maxN : this.queryInfo.pagenum
             this.getUserList()
         },
         // 页码值 改变
@@ -275,25 +305,32 @@ export default {
             if (confirm !== 'confirm') return
 
             const { data: res } = await this.$http.delete('users/' + uid)
-            if (res.meta.status !== 200) this.$msg.error(res.meta.error)
+            if (res.meta.status !== 200) this.$msg.error(res.meta.msg)
             this.$msg.success('删除用户成功')
             if (this.queryInfo.pagenum > 1 && this.userlist.length === 1) this.queryInfo.pagenum -= 1
             this.getUserList()
+        }, 
+        // 显示分配角色对话框
+        async setRole(userInfo) {
+            const { data: res } = await this.$http.get('roles')
+            if (res.meta.status !== 200) return this.$msg.error(res.meta.msg)
+            this.rolesList = res.data
+            this.userInfo = userInfo
+            this.selectedRoleId = ''
+            this.setRoleDialogVisible = true
+        },
+        // 分配角色
+        async saveRoleInfo() {
+            if (!this.selectedRoleId) return this.$msg.error('请选择要分配的角色')
+            const { data: res } = await this.$http.put('users/' + this.userInfo.id + '/role', { rid: 'this.selectedRoleId' })
+            if (res.meta.status !== 200) return this.$msg.error(res.meta.msg)
+            this.$msg.success('分配角色成功')
+            this.getUserList()
+            this.setRoleDialogVisible = false
         }
     }
 }
 </script>
 
 <style lang="less" scoped>
-.el-breadcrumb {
-    font-size: 12px;
-    margin-bottom: 15px;
-}
-.el-card {
-    box-shadow: 0 1px 1px rgba(0, 0, 0, 0.2) !important;
-}
-.el-table {
-    font-size: 12px;
-    margin-top: 15px;
-}
 </style>

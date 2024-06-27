@@ -2,4 +2,30 @@ html, body, #app {
     height: 100%;
     margin: 0;
     padding: 0;
+    min-width: 1366px;
+}
+
+.el-breadcrumb {
+    font-size: 12px;
+    margin-bottom: 15px;
+}
+.el-card {
+    box-shadow: 0 1px 1px rgba(0, 0, 0, 0.2) !important;
+}
+.el-table, .tree-table {
+    font-size: 12px;
+    margin-top: 15px;
+}
+
+.el-steps {
+    font-size: 12px;
+    margin: 15px 0;
+}
+
+.el-cascader-panel {
+    max-height: 320px;
+}
+
+.ql-editor {
+    min-height: 300px;
 }

@@ -4,6 +4,14 @@ import login from '../components/Login.vue'
 import home from '../components/Home.vue'
 import welcome from '../components/Welcome.vue'
 import users from '../components/user/Users.vue'
+import rights from '../components/power/Rights.vue'
+import roles from '../components/power/Roles.vue'
+import cate from '../components/goods/Cate.vue'
+import params from '../components/goods/Params.vue'
+import goods from '../components/goods/List.vue'
+import addGoods from '../components/goods/Add.vue'
+import orders from '../components/order/Order.vue'
+import reports from '../components/report/Report.vue'
 
 Vue.use(VueRouter)
 
@@ -16,7 +24,15 @@ const routes = [
     redirect: '/home/welcome', 
     children: [
       { path: '/home/welcome', component: welcome },
-      { path: '/home/users', component: users }
+      { path: '/home/users', component: users },
+      { path: '/home/rights', component: rights },
+      { path: '/home/roles', component: roles },
+      { path: '/home/categories', component: cate },
+      { path: '/home/params', component: params },
+      { path: '/home/goods', component: goods },
+      { path: '/home/addGoods', component: addGoods },
+      { path: '/home/orders', component: orders },
+      { path: '/home/reports', component: reports }
     ]
   }
 ]
