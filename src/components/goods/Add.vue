@@ -145,8 +145,8 @@ export default {
         // 获取分类数据
         async getCateList() {
             const { data: res } = await this.$http.get('categories', { params: { type: 3 } })
-            if (res.meta.status !== 200) return this.$msg.error(res.meta.msg)
-            this.$msg.success('获取商品分类成功')
+            if (res.meta.status !== 200) return this.$message.error(res.meta.msg)
+            this.$message.success('获取商品分类成功')
             this.cateList = res.data
         },
         // 选择分类
@@ -161,7 +161,7 @@ export default {
         beforeTabLeave(ai, oai) {
             console.log('ai: ', ai, ', oai: ', oai);
             if (oai === '0' && this.addForm.goods_cat.length !== 3) {
-                this.$msg.error('请选择商品分类')
+                this.$message.error('请选择商品分类')
                 return false
             }
         },
@@ -169,16 +169,16 @@ export default {
         async tabClicked() {
             if (this.activeIndex === '1') {
                 const { data: res } = await this.$http.get(`categories/${this.cateId}/attributes`, { params: { sel: 'many' } })
-                if (res.meta.status !== 200) return this.$msg.error(res.meta.msg)
-                this.$msg.success('获取动态参数成功')
+                if (res.meta.status !== 200) return this.$message.error(res.meta.msg)
+                this.$message.success('获取动态参数成功')
                 res.data.forEach(item => {
                     item.attr_vals = item.attr_vals.length > 0 ? item.attr_vals.split(' ') : []
                 });
                 this.manyTableData = res.data
             } else if (this.activeIndex === '2') {
                 const { data: res } = await this.$http.get(`categories/${this.cateId}/attributes`, { params: { sel: 'only' } })
-                if (res.meta.status !== 200) return this.$msg.error(res.meta.msg)
-                this.$msg.success('获取动态参数成功')
+                if (res.meta.status !== 200) return this.$message.error(res.meta.msg)
+                this.$message.success('获取动态参数成功')
                 this.onlyTableData = res.data
             }
         },
@@ -208,7 +208,7 @@ export default {
         // 添加商品
         add() {
             this.$refs.addFormRef.validate(async valid => {
-                if (!valid) return this.$msg.error('请填写必要的表单项')
+                if (!valid) return this.$message.error('请填写必要的表单项')
 
                 // lodash 深拷贝
                 const addForm = _.cloneDeep(this.addForm)
@@ -237,8 +237,8 @@ export default {
                 
                 // 发起请求
                 const { data: res } = await this.$http.post('goods', addForm)
-                if (res.meta.status !== 201) this.$msg.error(res.meta.msg)
-                this.$msg.success('添加商品成功')
+                if (res.meta.status !== 201) this.$message.error(res.meta.msg)
+                this.$message.success('添加商品成功')
                 this.$router.push('/home/goods')
             })
         }

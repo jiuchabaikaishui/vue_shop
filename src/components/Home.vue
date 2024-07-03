@@ -79,7 +79,7 @@ export default {
         // 获取边栏数据
         async getMenuList() {
             const { data: res } = await this.$http.get('menus')
-            if (res.meta.status !== 200) { return this.$msg.error(res.meta.msg) }
+            if (res.meta.status !== 200) { return this.$message.error(res.meta.msg) }
             this.menulist = res.data
         },
         // 展开或折叠左侧边栏

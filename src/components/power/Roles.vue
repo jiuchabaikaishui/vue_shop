@@ -85,7 +85,7 @@ export default {
     methods: {
         async getRolesList() {
             const { data: res } = await this.$http.get('roles')
-            if (res.meta.status !== 200) return this.$msg.error(res.meta.msg)
+            if (res.meta.status !== 200) return this.$message.error(res.meta.msg)
             this.rolesList = res.data
         },
         async removeRightById(role, rightId) {
@@ -101,8 +101,8 @@ export default {
 
             // 确认删除
             const { data: res } = await this.$http.delete(`roles/${role.id}/rights/${rightId}`)
-            if (res.meta.status !== 200) return this.$msg.error(res.meta.msg)
-            this.$msg.success('权限删除成功')
+            if (res.meta.status !== 200) return this.$message.error(res.meta.msg)
+            this.$message.success('权限删除成功')
 
             // 会触发页面重新渲染
             // this.getRolesList()
@@ -112,7 +112,7 @@ export default {
             console.log('role: ', role);
             // 获取权限列表
             const { data: res } = await this.$http.get('rights/tree')
-            if (res.meta.status !== 200) return this.$msg.error(res.meta.msg)
+            if (res.meta.status !== 200) return this.$message.error(res.meta.msg)
 
             this.rightsList = res.data
             // let keys = []
@@ -139,8 +139,8 @@ export default {
             const rids = keys.join(',')
             console.log('rids: ', rids);
             const { data: res } = await this.$http.post(`roles/${this.roleId}/rights`, { rids })
-            if (res.meta.status !== 200) return this.$msg.error(res.meta.msg)
-            this.$msg.success('分配权限成功')
+            if (res.meta.status !== 200) return this.$message.error(res.meta.msg)
+            this.$message.success('分配权限成功')
             this.getRolesList()
             this.setRightDialogVisible = false
         }

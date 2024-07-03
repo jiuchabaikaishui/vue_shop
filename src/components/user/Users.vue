@@ -211,7 +211,7 @@ export default {
         // 获取用户列表
         async getUserList() {
             const { data: res } = await this.$http.get('users', { params: this.queryInfo })
-            if (res.meta.status !== 200) return this.$msg.error(res.meta.msg)
+            if (res.meta.status !== 200) return this.$message.error(res.meta.msg)
             this.userlist = res.data.users
             this.total = res.data.total
         },
@@ -240,9 +240,9 @@ export default {
             const { data: res } = await this.$http.put(`users/${info.id}/state/${info.mg_state}`)
             if (res.meta.status !== 200) {
                 info.mg_state = !info.mg_state
-                return this.$msg.error(info.meta.msg)
+                return this.$message.error(info.meta.msg)
             }
-            return this.$msg.success('更新用户状态成功！')
+            return this.$message.success('更新用户状态成功！')
         },
         // 关闭添加用户对话框
         addDialogClosed() {
@@ -254,11 +254,11 @@ export default {
             // 验证表单
             this.$refs.addFormRef.validate(async valid => {
                 // 表单验证失败
-                if (!valid) return this.$msg.error('请填写正确的用户数据')
+                if (!valid) return this.$message.error('请填写正确的用户数据')
                 // 发起请求
                 const { data: res } = await this.$http.post('users', this.addForm)
-                if (res.meta.status !== 201) return this.$msg.error('添加用户失败')
-                this.$msg.success('添加用户成功')
+                if (res.meta.status !== 201) return this.$message.error('添加用户失败')
+                this.$message.success('添加用户成功')
                 // 关闭对话框
                 this.addDialogVisible = false
                 // 刷新列表
@@ -268,7 +268,7 @@ export default {
         // 显示编辑用户对话框
         async showEditDialog(uid) {
             const { data: res } = await this.$http.get(`users/${uid}`)
-            if (res.meta.status !== 200) return this.$msg.error(res.meta.msg)
+            if (res.meta.status !== 200) return this.$message.error(res.meta.msg)
             this.editForm = res.data
             this.editDialogVisible = true
         },
@@ -281,11 +281,11 @@ export default {
             // 验证表单
             this.$refs.editFormRef.validate(async valid => {
                 // 表单验证失败
-                if (!valid) return this.$msg.error('请填写正确的用户数据')
+                if (!valid) return this.$message.error('请填写正确的用户数据')
                 // 发起请求
                 const { data: res } = await this.$http.put(`users/${this.editForm.id}`, this.editForm)
-                if (res.meta.status !== 200) return this.$msg.error('修改用户失败')
-                this.$msg.success('修改用户成功')
+                if (res.meta.status !== 200) return this.$message.error('修改用户失败')
+                this.$message.success('修改用户成功')
                 // 关闭对话框
                 this.editDialogVisible = false
                 // 刷新列表
@@ -305,15 +305,15 @@ export default {
             if (confirm !== 'confirm') return
 
             const { data: res } = await this.$http.delete('users/' + uid)
-            if (res.meta.status !== 200) this.$msg.error(res.meta.msg)
-            this.$msg.success('删除用户成功')
+            if (res.meta.status !== 200) this.$message.error(res.meta.msg)
+            this.$message.success('删除用户成功')
             if (this.queryInfo.pagenum > 1 && this.userlist.length === 1) this.queryInfo.pagenum -= 1
             this.getUserList()
         }, 
         // 显示分配角色对话框
         async setRole(userInfo) {
             const { data: res } = await this.$http.get('roles')
-            if (res.meta.status !== 200) return this.$msg.error(res.meta.msg)
+            if (res.meta.status !== 200) return this.$message.error(res.meta.msg)
             this.rolesList = res.data
             this.userInfo = userInfo
             this.selectedRoleId = ''
@@ -321,10 +321,10 @@ export default {
         },
         // 分配角色
         async saveRoleInfo() {
-            if (!this.selectedRoleId) return this.$msg.error('请选择要分配的角色')
+            if (!this.selectedRoleId) return this.$message.error('请选择要分配的角色')
             const { data: res } = await this.$http.put('users/' + this.userInfo.id + '/role', { rid: 'this.selectedRoleId' })
-            if (res.meta.status !== 200) return this.$msg.error(res.meta.msg)
-            this.$msg.success('分配角色成功')
+            if (res.meta.status !== 200) return this.$message.error(res.meta.msg)
+            this.$message.success('分配角色成功')
             this.getUserList()
             this.setRoleDialogVisible = false
         }

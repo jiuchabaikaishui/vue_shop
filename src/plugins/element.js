@@ -45,7 +45,7 @@ Vue.use(Button)
 Vue.use(Form)
 Vue.use(FormItem)
 Vue.use(Input)
-Vue.prototype.$msg = Message
+Vue.prototype.$message = Message
 Vue.use(Container)
 Vue.use(Header)
 Vue.use(Aside)

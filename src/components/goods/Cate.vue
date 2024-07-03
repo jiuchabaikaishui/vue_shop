@@ -135,10 +135,10 @@ export default {
     methods: {
         async getCateList() {
             const { data: res } = await this.$http.get('categories', { params: this.queryInfo })
-            if (res.meta.status !== 200) return this.$msg.error(res.meta.msg)
+            if (res.meta.status !== 200) return this.$message.error(res.meta.msg)
             this.catelist = res.data.result
             this.total = res.data.total
-            this.$msg.success('商品分类获取成功')
+            this.$message.success('商品分类获取成功')
         },
         handleSizeChange(size) {
             console.log('size: ', size);
@@ -156,7 +156,7 @@ export default {
         async showAddCateDialog() {
             // 获取父级分类
             const { data: res } = await this.$http.get('categories', { params: { type: 2 } })
-            if (res.meta.status !== 200) return this.$msg.error(res.meta.error)
+            if (res.meta.status !== 200) return this.$message.error(res.meta.error)
             this.parentCateList = res.data
             this.addCateDialogVisible = true
         },
@@ -172,11 +172,11 @@ export default {
         async addCate() {
             // 验证表单
             this.$refs.addFormRef.validate(async valid => {
-                if (!valid) return this.$msg.error('请填写正确的分类名称')
+                if (!valid) return this.$message.error('请填写正确的分类名称')
 
                 const { data: res } = await this.$http.post('categories', this.addCateForm)
-                if (res.meta.status !== 201) return this.$msg.error(res.meta.msg)
-                this.$msg.success('添加商品分类成功')
+                if (res.meta.status !== 201) return this.$message.error(res.meta.msg)
+                this.$message.success('添加商品分类成功')
                 this.getCateList()
                 // 关闭对话框，重置数据
                 this.addCateDialogVisible = false
@@ -205,8 +205,8 @@ export default {
             if (confirm !== 'confirm') return
 
             const { data: res } = await this.$http.delete('categories/' + uid)
-            if (res.meta.status !== 200) return this.$msg.error(res.meta.msg)
-            this.$msg.success('删除商品分类成功')
+            if (res.meta.status !== 200) return this.$message.error(res.meta.msg)
+            this.$message.success('删除商品分类成功')
             if (this.queryInfo.pagenum > 1 && this.catelist.length === 1) this.queryInfo.pagenum -= 1
             this.getCateList()
         }

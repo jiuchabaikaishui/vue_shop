@@ -144,15 +144,15 @@ export default {
         // 获取分类数据
         async getCateList() {
             const { data: res } = await this.$http.get('categories', { params: { type: 3 } })
-            if (res.meta.status !== 200) return this.$msg.error(res.meta.msg)
-            this.$msg.success('获取商品分类成功')
+            if (res.meta.status !== 200) return this.$message.error(res.meta.msg)
+            this.$message.success('获取商品分类成功')
             this.cateList = res.data
         },
         // 获取参数列表数据
         async getParamsData() {
             const { data: res } = await this.$http.get(`categories/${this.cateId}/attributes`, { params: { sel: this.activeName } })
-            if (res.meta.status !== 200) return this.$msg.error(res.meta.msg)
-            this.$msg.success('获取参数列表成功')
+            if (res.meta.status !== 200) return this.$message.error(res.meta.msg)
+            this.$message.success('获取参数列表成功')
             // 将 attr_vals 转换为数组
             res.data.forEach(item => {
                 item.attr_vals = item.attr_vals ? item.attr_vals.split(' ') : []
@@ -186,14 +186,14 @@ export default {
         addParams() {
             // 验证表单
             this.$refs.addFormRef.validate(async valid => {
-                if (!valid) return this.$msg.error('请填写正确的参数名称')
+                if (!valid) return this.$message.error('请填写正确的参数名称')
 
                 const { data: res } = await this.$http.post(`categories/${this.cateId}/attributes`, { 
                     attr_name: this.addForm.attr_name,
                     attr_sel: this.activeName
                  })
-                if (res.meta.status !== 201) return this.$msg.error(res.meta.msg)
-                this.$msg.success(`添加${this.titleText}成功`)
+                if (res.meta.status !== 201) return this.$message.error(res.meta.msg)
+                this.$message.success(`添加${this.titleText}成功`)
                 this.addDialogVisible = false
                 this.getParamsData()
             })
@@ -201,8 +201,8 @@ export default {
         // 展示编辑参数对话框
         async showEditDialog(attrId) {
             const { data: res } = await this.$http.get(`categories/${this.cateId}/attributes/${attrId}`, { params: { attr_sel: this.activeName } })
-            if (res.meta.status !== 200) return this.$msg.error(res.meta.msg)
-            this.$msg.success(`获取${this.titleText}成功`)
+            if (res.meta.status !== 200) return this.$message.error(res.meta.msg)
+            this.$message.success(`获取${this.titleText}成功`)
             this.editForm = res.data
             this.editDialogVisible = true
         },
@@ -214,14 +214,14 @@ export default {
         editParams() {
             // 验证表单
             this.$refs.editFormRef.validate(async valid => {
-                if (!valid) return this.$msg.error('请填写正确的参数名称')
+                if (!valid) return this.$message.error('请填写正确的参数名称')
 
                 const { data: res } = await this.$http.put(`categories/${this.cateId}/attributes/${this.editForm.attr_id}`, { 
                     attr_name: this.editForm.attr_name,
                     attr_sel: this.activeName
                  })
-                if (res.meta.status !== 200) return this.$msg.error(res.meta.msg)
-                this.$msg.success(`添加${this.titleText}成功`)
+                if (res.meta.status !== 200) return this.$message.error(res.meta.msg)
+                this.$message.success(`添加${this.titleText}成功`)
                 this.editDialogVisible = false
                 this.getParamsData()
             })
@@ -239,8 +239,8 @@ export default {
             if (confirm !== 'confirm') return
 
             const { data: res } = await this.$http.delete(`categories/${this.cateId}/attributes/${attrId}`)
-            if (res.meta.status !== 200) return this.$msg.error(res.meta.msg)
-            this.$msg.success(`删除${this.titleText}成功`)
+            if (res.meta.status !== 200) return this.$message.error(res.meta.msg)
+            this.$message.success(`删除${this.titleText}成功`)
             this.getParamsData()
         },
         // 保存参数可选项
@@ -250,8 +250,8 @@ export default {
                 attr_sel: this.activeName,
                 attr_vals: attrVals
             })
-            if (res.meta.status !== 200) return this.$msg.error(res.meta.msg)
-            this.$msg.success(`${isAdd ? '添加' : '删除'}${this.titleText}可选项成功`)
+            if (res.meta.status !== 200) return this.$message.error(res.meta.msg)
+            this.$message.success(`${isAdd ? '添加' : '删除'}${this.titleText}可选项成功`)
             this.getParamsData()
         },
         // 删除参数可选项

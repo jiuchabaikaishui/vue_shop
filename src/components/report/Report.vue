@@ -60,11 +60,11 @@ export default {
     },
     async mounted() {
         const { data: res } = await this.$http.get('reports/type/1')
-        if (res.meta.status !== 200) return this.$msg.error(res.meta.msg)
-        this.$msg.success('获取折线图数据成功')
+        if (res.meta.status !== 200) return this.$message.error(res.meta.msg)
+        this.$message.success('获取折线图数据成功')
 
         // 初始化
-        var myChart = echarts.init(document.getElementById('main'))
+        const myChart = echarts.init(document.getElementById('main'))
 
         // 设置配置项
         myChart.setOption(_.merge(this.options, res.data))

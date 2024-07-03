@@ -130,8 +130,8 @@ export default {
         // 获取订单列表
         async getOrderList() {
             const { data: res } = await this.$http.get('orders', { params: this.queryInfo })
-            if (res.meta.status !== 200) return this.$msg.error(res.meta.msg)
-            this.$msg.success('获取订单列表成功')
+            if (res.meta.status !== 200) return this.$message.error(res.meta.msg)
+            this.$message.success('获取订单列表成功')
             this.orderList = res.data.goods
             this.total = res.data.total
         },
@@ -167,8 +167,8 @@ export default {
         // 展示物流进度对话框
         async showProgressBox(orderNumber) {
             // const { data: res } = await this.$http.get('kuaidi/' + orderNumber)
-            // if (res.meta.status !== 200) return this.$msg.error(res.meta.msg)
-            // this.$msg.success('获取物流进度成功')
+            // if (res.meta.status !== 200) return this.$message.error(res.meta.msg)
+            // this.$message.success('获取物流进度成功')
             // this.progressInfo = res.data
             
             const data = `[

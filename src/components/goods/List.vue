@@ -78,10 +78,10 @@ export default {
         // 获取商品列表数据
         async getGoodsList() {
             const { data: res } = await this.$http.get('goods', { params: this.queryInfo })
-            if (res.meta.status !== 200) return this.$msg.error(res.meta.msg)
+            if (res.meta.status !== 200) return this.$message.error(res.meta.msg)
             this.goodsList = res.data.goods
             this.total = res.data.total
-            this.$msg.success('获取商品列表成功')
+            this.$message.success('获取商品列表成功')
         },
         // 查询商品
         queryGoodsList() {
@@ -115,8 +115,8 @@ export default {
             if (confirm !== 'confirm') return
             
             const { data: res } = this.$http.delete('goods/' + gid)
-            if (res.meta.status !== 200) return this.$msg.error(res.meta.msg)
-            this.$msg.success('删除商品成功')
+            if (res.meta.status !== 200) return this.$message.error(res.meta.msg)
+            this.$message.success('删除商品成功')
             this.getGoodsList()
         },
         // 添加商品
